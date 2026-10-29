@@ -1,5 +1,9 @@
 # Romain Rochegude — professional website
 
+[![Validate](https://github.com/RoRoche/roroche.github.io/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/RoRoche/roroche.github.io/actions/workflows/ci.yml)
+[![Publish to GitHub Pages](https://github.com/RoRoche/roroche.github.io/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/RoRoche/roroche.github.io/actions/workflows/deploy.yml)
+![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)
+
 A static, English-language Astro site for software architecture, quality, automation and technical leadership. Dark visual identity, self-hosted Roboto, responsive layouts and no browser JavaScript. Articles use Shiki syntax highlighting and permanent, topic-filtered pages.
 
 ## Local development
