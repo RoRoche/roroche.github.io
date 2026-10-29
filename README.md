@@ -65,11 +65,7 @@ Local article imagery is copied as supplied; optimize oversized images in the ar
 
 ## GitHub Pages deployment
 
-The canonical target is **https://roroche.github.io/**. GitHub requires the user-site repository to be named **RoRoche/roroche.github.io** for this root URL. This checkout currently points to `RoRoche/website`: rename it on GitHub or move the source to `RoRoche/roroche.github.io` before the first root deployment. Update the local remote after a rename:
-
-```sh
-git remote set-url origin https://github.com/RoRoche/roroche.github.io.git
-```
+The site is configured for **https://roroche.github.io/**, using the user-site repository **RoRoche/roroche.github.io**. `SITE_URL` defaults to `https://roroche.github.io` and `BASE_PATH` defaults to `/`; no repository variable overrides are needed.
 
 1. Push the code to `main` in the destination repository.
 2. In **Settings → Pages → Build and deployment**, select **GitHub Actions**.
@@ -77,8 +73,6 @@ git remote set-url origin https://github.com/RoRoche/roroche.github.io.git
 4. Check the workflow's deployment URL before sharing the site.
 
 No custom domain or `CNAME` is needed. The workflow imports the public `RoRoche/articles` repository at build time, validates the site, builds static output, uploads the Pages artifact, then deploys it using short-lived OIDC permissions. No personal access token is needed for article reads.
-
-If keeping the project repository `RoRoche/website`, set repository variable `BASE_PATH` to `/website/` instead. The site will then be hosted at **https://roroche.github.io/website/**. `SITE_URL` defaults to `https://roroche.github.io`; it can also be overridden through a repository variable. For local builds with this path, set `BASE_PATH=/website/` for both import and build.
 
 ### Publishing updates from the articles repository
 
