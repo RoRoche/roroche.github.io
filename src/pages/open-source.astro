@@ -1,0 +1,59 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { projects } from '../data/projects';
+---
+
+<Layout title="Open Source">
+  <section class="container page-intro">
+    <p class="eyebrow">Built to be shared</p>
+    <h1>
+      Useful by design<span class="accent">.</span>
+      <br />
+      <span class="muted-heading">Open by choice.</span>
+    </h1>
+    <p>
+      Focused tools for problems I care about: clearer configuration, executable
+      design rules, expressive tests and documentation that stays close to the
+      code.
+    </p>
+  </section>
+  <section class="container project-details">
+    {projects.map((project, index) => (
+      <article class="project-detail" id={project.name}>
+        <div>
+          <p class="eyebrow">
+            0{index + 1} / {project.category}
+          </p>
+          <h2>{project.name}</h2>
+          <p class="lead">{project.summary}</p>
+          <div class="tags">
+            {project.tech.map((tech) => (
+              <span>{tech}</span>
+            ))}
+          </div>
+          <div class="actions">
+            <a
+              class="text-link"
+              href={`https://github.com/RoRoche/${project.name}`}
+            >
+              GitHub ↗
+            </a>
+            <a
+              class="text-link"
+              href={`https://central.sonatype.com/artifact/com.github.roroche/${project.artifact}`}
+            >
+              Maven Central ↗
+            </a>
+          </div>
+        </div>
+        <div class="project-explanation">
+          <h3>The problem</h3>
+          <p>{project.problem}</p>
+          <h3>The approach</h3>
+          <p>{project.approach}</p>
+          <code>com.github.roroche:{project.artifact}</code>
+        </div>
+      </article>
+    ))}
+  </section>
+</Layout>

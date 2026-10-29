@@ -1,0 +1,91 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { site } from '../data/site';
+const journey = [
+  [
+    '2025 — today',
+    'Leading teams. Passing it on.',
+    'As an IT technical manager at Accenture, I coach teams, support technical decisions and embed continuous improvement. Teaching software architecture and quality at ISIMA brings these practices into the classroom.',
+  ],
+  [
+    '2022 — today',
+    'Exploring what comes next.',
+    'Innovation consulting at Accenture has broadened my work into automation, generative AI and the ways emerging tools can improve engineering practice.',
+  ],
+  [
+    '2017 — 2022',
+    'From implementation to architecture.',
+    'At Accenture, I moved through software development, technical leadership and software architecture: shaping Java systems, delivery pipelines and shared architecture decisions.',
+  ],
+  [
+    '2012 — 2017',
+    'Learning through mobile.',
+    'At Openium and Modis, I built iOS and Android applications, introduced automated tests and CI, and began mentoring other developers.',
+  ],
+  [
+    '2010 — 2011',
+    'The first building blocks.',
+    'Java web development and mobile prototyping at Sopra Steria gave me my first professional grounding in building and maintaining software.',
+  ],
+];
+---
+
+<Layout title="About">
+  <section class="container page-intro">
+    <p class="eyebrow">The person behind the practice</p>
+    <h1>
+      Hi, I’m Romain<span class="accent">.</span>
+    </h1>
+    <p>
+      A software architect, technical leader and educator based in
+      Clermont-Ferrand, France. Curious about code. Invested in people.
+    </p>
+    <div class="actions">
+      <a class="button" href={site.linkedin}>
+        Connect on LinkedIn ↗
+      </a>
+      <a class="text-link" href={site.github}>
+        Find me on GitHub ↗
+      </a>
+    </div>
+  </section>
+  <section class="container about-story section">
+    <p class="eyebrow">A thread through the years</p>
+    <div>
+      <h2>
+        My scope has changed.
+        <br />
+        My curiosity hasn’t.
+      </h2>
+      <p>
+        I started by making software work. Over time, the questions became
+        wider: how do we make it easier to change? How do we build confidence in
+        it? And how do we help a whole team succeed?
+      </p>
+      <p>
+        Today, my work sits at the intersection of architecture, craftsmanship
+        and leadership. I still enjoy small, well-designed objects and a test
+        that tells a clear story. I also care about the conditions that let
+        people build them: shared context, useful automation and room to learn.
+      </p>
+      <p>
+        Open source, writing and teaching are ways to make that learning useful
+        beyond a single project.
+      </p>
+    </div>
+  </section>
+  <section class="container section">
+    <p class="eyebrow">My journey</p>
+    <div class="timeline">
+      {journey.map(([date, title, text]) => (
+        <article>
+          <span class="small-label">{date}</span>
+          <div>
+            <h3>{title}</h3>
+            <p>{text}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Layout>

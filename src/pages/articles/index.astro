@@ -1,0 +1,45 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import EmptyArticles from '../../components/EmptyArticles.astro';
+import { getArticles, href } from '../../lib/content';
+import { categories, labels } from '../../data/site';
+const articles = await getArticles();
+---
+
+<Layout title="Articles">
+  <section class="container page-intro">
+    <p class="eyebrow">The engineering notebook</p>
+    <h1>
+      Ideas, put into words<span class="accent">.</span>
+    </h1>
+    <p>
+      Practical explorations of software design, reliable delivery and the
+      people behind the code.
+    </p>
+  </section>
+  <section class="container section library">
+    <nav class="filters" aria-label="Filter articles by topic">
+      <a aria-current="page" href={href('articles/')}>
+        All articles <span>{articles.length}</span>
+      </a>
+      {categories.map((category) => (
+        <a href={href(`articles/category/${category}/`)}>
+          {labels[category]}{' '}
+          <span>
+            {articles.filter((a) => a.data.category === category).length}
+          </span>
+        </a>
+      ))}
+    </nav>
+    {articles.length ? (
+      <div class="article-grid">
+        {articles.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+    ) : (
+      <EmptyArticles />
+    )}
+  </section>
+</Layout>

@@ -1,0 +1,59 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import { getArticles, href } from '../../../lib/content';
+import { categories, labels } from '../../../data/site';
+export function getStaticPaths() {
+  return categories.map((category) => ({ params: { category } }));
+}
+const { category } = Astro.params;
+const articles = await getArticles();
+const filtered = articles.filter(
+  (article) => article.data.category === category,
+);
+---
+
+<Layout title={`${labels[category!]} articles`}>
+  <section class="container page-intro">
+    <p class="eyebrow">The engineering notebook</p>
+    <h1>
+      {labels[category!]}
+      <span class="accent">.</span>
+    </h1>
+    <p>
+      Writing on {labels[category!].toLowerCase()}, grounded in engineering
+      practice.
+    </p>
+  </section>
+  <section class="container section library">
+    <nav class="filters" aria-label="Filter articles by topic">
+      <a href={href('articles/')}>
+        All articles <span>{articles.length}</span>
+      </a>
+      {categories.map((topic) => (
+        <a
+          aria-current={topic === category ? 'page' : undefined}
+          href={href(`articles/category/${topic}/`)}
+        >
+          {labels[topic]}{' '}
+          <span>
+            {articles.filter((a) => a.data.category === topic).length}
+          </span>
+        </a>
+      ))}
+    </nav>
+    {filtered.length ? (
+      <div class="article-grid">
+        {filtered.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+    ) : (
+      <div class="empty-state">
+        <h2>More to come.</h2>
+        <p>No published articles in this topic yet.</p>
+        <a href={href('articles/')}>Browse all articles →</a>
+      </div>
+    )}
+  </section>
+</Layout>

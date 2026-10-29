@@ -1,0 +1,170 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import EmptyArticles from '../components/EmptyArticles.astro';
+import { getArticles, href } from '../lib/content';
+import { expertise } from '../data/site';
+import { projects } from '../data/projects';
+const articles = (await getArticles()).slice(0, 3);
+---
+
+<Layout>
+  <section class="hero container">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span class="status-dot"></span> Software architect · Technical leader ·
+        Educator
+      </p>
+      <h1>
+        Building better
+        <br />
+        software<span class="accent">.</span>
+        <br />
+        <span class="muted-heading">Growing better</span>
+        <br />
+        <span class="muted-heading">
+          engineering teams<span class="accent">.</span>
+        </span>
+      </h1>
+      <p class="hero-description">
+        I’m Romain. I connect thoughtful architecture, uncompromising quality
+        and human leadership to help engineers do their best work.
+      </p>
+      <div class="actions">
+        <a class="button" href={href('articles/')}>
+          Explore my writing <span>↗</span>
+        </a>
+        <a class="text-link" href={href('about/')}>
+          A little about me <span>→</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-top">
+        <span>THE ENGINEERING PRACTICE</span>
+        <span>↗</span>
+      </div>
+      <svg viewBox="0 0 400 400" fill="none">
+        <path d="M200 32 345 116v168L200 368 55 284V116Z" stroke="#395b50" />
+        <path d="M200 96 289 148v104L200 304l-89-52V148Z" stroke="#5e9b82" />
+        <path
+          d="m200 158 36 21v42l-36 21-36-21v-42Z"
+          fill="#b7efd3"
+          fill-opacity=".1"
+          stroke="#b7efd3"
+        />
+        <path
+          d="M200 32v126m145-42-109 63m109 105-109-63M200 368V242M55 284l109-63M55 116l109 63"
+          stroke="#395b50"
+        />
+        <circle cx="200" cy="32" r="5" fill="#b7efd3" />
+        <circle cx="345" cy="284" r="5" fill="#b7efd3" />
+        <circle cx="55" cy="284" r="5" fill="#b7efd3" />
+        <circle cx="200" cy="200" r="8" fill="#b7efd3" />
+      </svg>
+      <div class="art-bottom">
+        <span>Code. Systems. People.</span>
+        <span class="accent">Connected by design.</span>
+      </div>
+    </div>
+    <div class="hero-baseline">
+      <span>Based in Clermont-Ferrand, France</span>
+      <span>
+        Ideas into practice <span class="accent">↓</span>
+      </span>
+    </div>
+  </section>
+  <section class="section container">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">01 / What I care about</p>
+        <h2>
+          Good engineering is
+          <br />a shared practice.
+        </h2>
+      </div>
+      <p>
+        From the objects we compose to the teams we grow, the details shape the
+        whole.
+      </p>
+    </div>
+    <div class="expertise-grid">
+      {expertise.map((item) => (
+        <article class="expertise">
+          <span class="item-number">{item.number} /</span>
+          <h3>{item.title}</h3>
+          <p>{item.text}</p>
+          <span class="small-label">{item.tags}</span>
+        </article>
+      ))}
+    </div>
+  </section>
+  <section class="section container">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">02 / Notes from the field</p>
+        <h2>Thinking out loud.</h2>
+      </div>
+      <a class="text-link" href={href('articles/')}>
+        All articles ↗
+      </a>
+    </div>
+    {articles.length ? (
+      <div class="article-grid">
+        {articles.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+    ) : (
+      <EmptyArticles />
+    )}
+  </section>
+  <section class="section container">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">03 / Built to be shared</p>
+        <h2>
+          Small tools.
+          <br />
+          Lasting usefulness.
+        </h2>
+      </div>
+      <a class="text-link" href={href('open-source/')}>
+        Explore open source ↗
+      </a>
+    </div>
+    <div class="project-list">
+      {projects.map((project, index) => (
+        <a class="project-row" href={href(`open-source/#${project.name}`)}>
+          <span class="item-number">0{index + 1}</span>
+          <div>
+            <h3>{project.name}</h3>
+            <p>{project.summary}</p>
+          </div>
+          <span class="project-category">{project.category}</span>
+          <span class="accent arrow">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="container closing">
+    <p class="eyebrow">Keep learning. Keep sharing.</p>
+    <h2>
+      Knowledge grows
+      <br />
+      when it’s passed on<span class="accent">.</span>
+    </h2>
+    <p>
+      Through teaching, talks and a book in progress, I’m exploring what it
+      takes to grow from writing code to helping others thrive.
+    </p>
+    <div class="actions">
+      <a class="text-link" href={href('talks/')}>
+        Talks & Teaching ↗
+      </a>
+      <a class="text-link" href={href('book/')}>
+        From Code to Leadership ↗
+      </a>
+    </div>
+  </section>
+</Layout>

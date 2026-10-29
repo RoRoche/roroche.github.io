@@ -1,0 +1,14 @@
+[tools]
+node = "24.19.0"
+
+[tasks.install]
+run = "npm ci"
+
+[tasks.dev]
+run = "npm run dev"
+
+[tasks.sync]
+run = "npm run sync:articles"
+
+[tasks.check]
+run = ["npm run test", "npm run check", "npm run build"]

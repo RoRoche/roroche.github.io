@@ -1,0 +1,45 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { asset, href, articleDate } from '../lib/content';
+import { labels } from '../data/site';
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+const { article } = Astro.props;
+---
+
+<article class="article-card">
+  <a
+    href={href(`articles/${article.id}/`)}
+    class="article-image"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <img
+      src={asset(article.data.image)}
+      alt=""
+      width="1200"
+      height="630"
+      loading="lazy"
+    />
+  </a>
+  <div class="article-meta">
+    <span class="eyebrow">{labels[article.data.category]}</span>
+    <time datetime={article.data.date.toISOString()}>
+      {articleDate(article.data.date, article.data.draft)}
+    </time>
+    {article.data.draft && <span>Draft preview</span>}
+  </div>
+  <h3>
+    <a href={href(`articles/${article.id}/`)}>
+      {article.data.title}
+      <span aria-hidden="true"> ↗</span>
+    </a>
+  </h3>
+  <p>{article.data.description}</p>
+  <div class="tags">
+    {article.data.tags.map((tag) => (
+      <span>{tag}</span>
+    ))}
+  </div>
+</article>

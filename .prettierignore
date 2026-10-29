@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.external/
+.idea/
+package-lock.json
+src/content/articles/
+public/article-assets/

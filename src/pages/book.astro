@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getArticles } from '../lib/content';
+import ArticleCard from '../components/ArticleCard.astro';
+const related = (await getArticles())
+  .filter((a) => ['architecture', 'leadership'].includes(a.data.category))
+  .slice(0, 3);
+---
+
+<Layout title="From Code to Leadership">
+  <section class="container book-intro page-intro">
+    <div>
+      <p class="eyebrow">A book in progress</p>
+      <h1>
+        From Code
+        <br />
+        to Leadership<span class="accent">.</span>
+      </h1>
+      <p>Growing your impact without losing touch with the craft.</p>
+      <p class="publication-note">
+        Manuscript in development. A publication date has not been announced.
+      </p>
+    </div>
+    <div
+      class="book-cover"
+      aria-label="From Code to Leadership, by Romain Rochegude"
+    >
+      <span>ROMAIN ROCHEGUDE</span>
+      <div>
+        FROM
+        <br />
+        CODE TO
+        <br />
+        <strong>
+          LEADERSHIP<span class="accent">.</span>
+        </strong>
+      </div>
+      <span>CODE → SYSTEMS → PEOPLE</span>
+    </div>
+  </section>
+  <section class="container section">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">The idea</p>
+        <h2>
+          Widen the lens.
+          <br />
+          Deepen the impact.
+        </h2>
+      </div>
+      <p>
+        A reflection on the journey from developer to tech lead, software
+        architect and technical manager, and the skills each transition asks us
+        to develop.
+      </p>
+    </div>
+    <div class="expertise-grid">
+      {[
+        [
+          '01',
+          'Build the foundations',
+          'Craftsmanship, testing and continuous delivery.',
+        ],
+        [
+          '02',
+          'Become a tech lead',
+          'Leading without authority, collaboration and shared standards.',
+        ],
+        [
+          '03',
+          'Design systems',
+          'Architectural decisions, technical roadmaps and a broader perspective.',
+        ],
+        [
+          '04',
+          'Grow teams',
+          'Technical management, continuous improvement and collective impact.',
+        ],
+      ].map(([n, title, text]) => (
+        <article class="expertise">
+          <span class="item-number">{n} /</span>
+          <h3>{title}</h3>
+          <p>{text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+  {related.length > 0 && (
+    <section class="container section">
+      <p class="eyebrow">Related thinking</p>
+      <h2>Along the same path.</h2>
+      <div class="article-grid">
+        {related.map((article) => (
+          <ArticleCard article={article} />
+        ))}
+      </div>
+    </section>
+  )}
+</Layout>

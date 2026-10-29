@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.idea/
+.DS_Store
+.external/
+src/content/articles/*
+!src/content/articles/.gitkeep
+public/article-assets/
+.env
