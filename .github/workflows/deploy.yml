@@ -9,6 +9,9 @@ on:
     - cron: '17 6 * * *'
 permissions:
   contents: read
+env:
+  HUSKY: 0
+  ASTRO_TELEMETRY_DISABLED: 1
 concurrency:
   group: github-pages
   cancel-in-progress: false
@@ -30,9 +33,16 @@ jobs:
           path: .external/articles
           persist-credentials: false
       - run: npm run sync:articles -- .external/articles
-      - run: npm test
-      - run: npm run check
-      - run: npm run build
+      - name: ESLint (including Astro accessibility rules)
+        run: npm run lint
+      - name: Prettier
+        run: npm run format:check
+      - name: Astro Check
+        run: npm run check
+      - name: Tests
+        run: npm test
+      - name: Build
+        run: npm run build
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: dist

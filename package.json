@@ -14,7 +14,12 @@
     "test": "node --test scripts/*.test.mjs",
     "sync:articles": "node scripts/sync-articles.mjs",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "npm run lint -- --fix",
+    "quality": "npm run lint && npm run format:check && npm run check && npm test",
+    "validate": "npm run quality && npm run build",
+    "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
@@ -24,8 +29,16 @@
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^3.2.1",
+    "eslint-plugin-jsx-a11y-x": "^0.2.0",
+    "globals": "^17.14.0",
+    "husky": "^9.1.7",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.72.1"
   }
 }

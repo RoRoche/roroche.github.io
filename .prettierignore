@@ -6,3 +6,5 @@ dist/
 package-lock.json
 src/content/articles/
 public/article-assets/
+
+.husky/_/

@@ -24,11 +24,25 @@ npm run sync:articles -- ../articles
 Content is generated explicitly before a build, rather than fetched by the browser. `npm run build` also works without imported articles and displays an honest empty state. Generated articles and assets are ignored by Git.
 
 ```sh
-npm test
-npm run check
-npm run build
+npm run validate                # all quality checks, then the production build
 npm run preview
 ```
+
+## Quality checks and commit hooks
+
+`npm ci` installs the Husky pre-commit hook through the `prepare` script. Every commit checks staged whitespace errors, then runs the full project validation:
+
+1. **ESLint**: JavaScript, TypeScript and Astro rules, including strict accessibility checks. Warnings fail validation.
+2. **Prettier**: checks formatting without modifying files.
+3. **Astro Check**: validates Astro components and TypeScript types.
+4. **Tests**: runs the Node.js article-import tests.
+5. **Build**: generates the production site and optimized images only after the checks pass.
+
+Run `npm run quality` for the checks without the build, or `npm run validate` for the complete sequence. Use `npm run format` and `npm run lint:fix` to apply supported fixes, review them and stage the resulting changes before committing again. Validation checks the entire working tree, including unstaged changes; it does not automatically stage or rewrite files.
+
+The hook uses locally available articles and does not fetch content or require network access. Run `npm run sync:articles` first when you want to validate the latest published content. Generated content, dependencies and build output are excluded from source linting and formatting; Astro Check and the build still validate imported articles.
+
+Both GitHub Actions workflows retrieve articles and run ESLint, Prettier, Astro Check and tests as separate steps before building. A failed check blocks the build and deployment. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
 
 ## Article source contract
 

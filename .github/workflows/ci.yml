@@ -5,6 +5,9 @@ on:
     branches: [main]
 permissions:
   contents: read
+env:
+  HUSKY: 0
+  ASTRO_TELEMETRY_DISABLED: 1
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -12,7 +15,6 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3
       - run: npm ci
-      - run: npm test
       - name: Retrieve articles
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -21,5 +23,13 @@ jobs:
           path: .external/articles
           persist-credentials: false
       - run: npm run sync:articles -- .external/articles
-      - run: npm run check
-      - run: npm run build
+      - name: ESLint (including Astro accessibility rules)
+        run: npm run lint
+      - name: Prettier
+        run: npm run format:check
+      - name: Astro Check
+        run: npm run check
+      - name: Tests
+        run: npm test
+      - name: Build
+        run: npm run build

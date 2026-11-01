@@ -1,0 +1,4 @@
+set -eu
+
+git diff --cached --check
+npm run validate
