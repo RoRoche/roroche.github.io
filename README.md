@@ -4,7 +4,7 @@
 [![Publish to GitHub Pages](https://github.com/RoRoche/roroche.github.io/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/RoRoche/roroche.github.io/actions/workflows/deploy.yml)
 ![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)
 
-A static, English-language Astro site for software architecture, quality, automation and technical leadership. Dark visual identity, self-hosted Roboto, responsive layouts and no browser JavaScript. Articles use Shiki syntax highlighting and permanent, topic-filtered pages.
+A static, English-language Astro site for software architecture, quality, automation and technical leadership. Dark visual identity, self-hosted Roboto, responsive layouts and no first-party browser JavaScript. Talk slides use a lazy-loaded Notist iframe; its interactive player runs third-party JavaScript inside the frame. Articles use Shiki syntax highlighting and permanent, topic-filtered pages.
 
 ## Local development
 
