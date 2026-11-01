@@ -59,7 +59,7 @@ const journey = [
             src={portrait}
             alt="Portrait of Romain Rochegude"
             widths={[360, 540, 720]}
-            sizes="(max-width: 700px) 82vw, (max-width: 1000px) 36vw, 420px"
+            sizes="(max-width: 700px) 220px, (max-width: 1000px) 30vw, 300px"
             format="webp"
             loading="eager"
             fetchpriority="high"
@@ -81,10 +81,6 @@ const journey = [
         <circle cx="439" cy="355" r="4" />
         <circle cx="41" cy="355" r="4" />
       </svg>
-      <figcaption>
-        Architecture <span aria-hidden="true">/</span> Engineering{' '}
-        <span aria-hidden="true">/</span> DevSecOps
-      </figcaption>
     </figure>
   </section>
   <section class="container about-story section">
@@ -144,15 +140,15 @@ const journey = [
   .portrait-composition {
     position: relative;
     width: 100%;
-    max-width: 460px;
+    max-width: 360px;
     margin: 0 auto;
-    padding: 30px 30px 52px;
+    padding: 24px;
     isolation: isolate;
   }
   .portrait-composition::before {
     content: '';
     position: absolute;
-    inset: 0 0 22px;
+    inset: 0;
     z-index: -1;
     background: radial-gradient(ellipse, #91bfff18, transparent 70%);
   }
@@ -214,18 +210,6 @@ const journey = [
     stroke: var(--bg);
     stroke-width: 2;
   }
-  figcaption {
-    margin-top: 36px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  figcaption span {
-    margin-inline: 6px;
-    color: var(--accent);
-  }
   @media (max-width: 700px) {
     .about-intro {
       grid-template-columns: 1fr;
@@ -235,8 +219,7 @@ const journey = [
       font-size: 1rem;
     }
     .portrait-composition {
-      width: min(100%, 360px);
-      padding-bottom: 20px;
+      width: min(100%, 280px);
     }
   }
 </style>

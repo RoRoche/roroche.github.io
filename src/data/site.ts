@@ -35,7 +35,7 @@ export const expertise = [
     number: '03',
     title: 'Automate the friction.',
     text: 'Build delivery systems that remove repetitive work and give engineers room to think.',
-    tags: 'CI/CD / DevOps / Developer experience',
+    tags: 'CI/CD / DevSecOps / Developer experience',
   },
   {
     number: '04',
