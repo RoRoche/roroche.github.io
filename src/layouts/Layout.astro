@@ -1,5 +1,6 @@
 ---
 import '@fontsource-variable/roboto';
+import Analytics from '../components/Analytics.astro';
 import '../styles/global.css';
 import { site } from '../data/site';
 import { href } from '../lib/content';
@@ -45,6 +46,9 @@ const nav = [
     <meta property="og:image" content={new URL(image, Astro.site)} />
     <meta name="twitter:card" content="summary_large_image" />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {import.meta.env.PROD &&
+      !noindex &&
+      process.env.INCLUDE_DRAFTS !== 'true' && <Analytics />}
   </head>
   <body>
     <a class="skip-link" href="#main">

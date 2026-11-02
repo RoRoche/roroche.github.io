@@ -4,7 +4,7 @@
 [![Publish to GitHub Pages](https://github.com/RoRoche/roroche.github.io/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/RoRoche/roroche.github.io/actions/workflows/deploy.yml)
 ![We recommend IntelliJ IDEA](https://www.elegantobjects.org/intellij-idea.svg)
 
-A static, English-language Astro site for software architecture, quality, automation and technical leadership. Dark visual identity, self-hosted Roboto, responsive layouts and no first-party browser JavaScript. Talk slides use a lazy-loaded Notist iframe; its interactive player runs third-party JavaScript inside the frame. Articles use Shiki syntax highlighting and permanent, topic-filtered pages.
+A static, English-language Astro site for software architecture, quality, automation and technical leadership. Dark visual identity, self-hosted Roboto, responsive layouts and minimal browser JavaScript for analytics. Talk slides use a lazy-loaded Notist iframe; its interactive player runs third-party JavaScript inside the frame. Articles use Shiki syntax highlighting and permanent, topic-filtered pages.
 
 ## Local development
 
@@ -35,7 +35,7 @@ npm run preview
 1. **ESLint**: JavaScript, TypeScript and Astro rules, including strict accessibility checks. Warnings fail validation.
 2. **Prettier**: checks formatting without modifying files.
 3. **Astro Check**: validates Astro components and TypeScript types.
-4. **Tests**: runs the Node.js article-import tests.
+4. **Tests**: runs the Node.js article-import and analytics tests.
 5. **Build**: generates the production site and optimized images only after the checks pass.
 
 Run `npm run quality` for the checks without the build, or `npm run validate` for the complete sequence. Use `npm run format` and `npm run lint:fix` to apply supported fixes, review them and stage the resulting changes before committing again. Validation checks the entire working tree, including unstaged changes; it does not automatically stage or rewrite files.
@@ -110,3 +110,13 @@ Article filters are static links, so they work without JavaScript, are keyboard 
 `mise.toml` pins Node 24. `package-lock.json` locks npm dependencies. Renovate covers npm, GitHub Actions and mise using its recommended presets; install/enable the Renovate GitHub App for this repository. CI validates pull requests and `main`. Deployment is limited to `main` and explicit workflow events; pull requests never deploy.
 
 Deployment reference: [GitHub Pages site types](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages).
+
+## Analytics and public article counters
+
+GoatCounter collects visits on production pages at `roroche.github.io`, using the account at https://roroche.goatcounter.com/. A small asynchronous tracker is loaded without an SDK or private API key. Development pages, draft-preview builds and pages marked `noindex` omit the integration. A hostname guard also prevents local previews of production output from loading the tracker or requesting counters.
+
+Published article pages display a discreet visit count next to the date. Enable **Allow adding visitor counts on your website** in the GoatCounter site settings; the rest of the dashboard can remain private. Counters use the full article path including the trailing slash, matching the site's canonical URLs. GoatCounter's default session deduplication means these are visits, not every page reload.
+
+The count stays hidden when the article has no data yet, public counters are disabled, or the request is blocked or fails. It never displays a fabricated zero. GoatCounter may cache public counts for up to four hours. See the [official counter documentation](https://www.goatcounter.com/help/visitor-counter).
+
+The integration lives in `src/scripts/analytics.mjs`. Update its account origin and production hostname if the site moves. Statistics start after deployment; existing traffic is not reconstructed. Export history regularly from GoatCounter if you want an independent archive.

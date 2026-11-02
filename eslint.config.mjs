@@ -35,5 +35,9 @@ export default [
       parserOptions: { parser: tseslint.parser },
     },
   },
+  {
+    files: ['src/scripts/**/*.{js,mjs,ts}'],
+    languageOptions: { globals: globals.browser },
+  },
   prettier,
 ];

@@ -35,6 +35,15 @@ const { Content, headings } = await render(article);
         <time datetime={article.data.date.toISOString()}>
           {articleDate(article.data.date, article.data.draft)}
         </time>
+        {import.meta.env.PROD &&
+          !article.data.draft &&
+          process.env.INCLUDE_DRAFTS !== 'true' && (
+            <span
+              data-visit-count={Astro.url.pathname}
+              hidden
+              aria-live="polite"
+            ></span>
+          )}
       </div>
       <div class="tags">
         {article.data.tags.map((tag) => (
