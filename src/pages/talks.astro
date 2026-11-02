@@ -21,7 +21,11 @@ import Layout from '../layouts/Layout.astro';
         <p class="eyebrow">On stage</p>
         <h2>Your tests are lying to you.</h2>
       </div>
-      <span class="small-label">API Hour #72 · Clermont’ech · June 2026</span>
+      <div class="event-card" aria-label="Event details">
+        <span class="event-organizer">Clermont’ech</span>
+        <strong>API Hour #72</strong>
+        <time datetime="2026-06-16">16 June 2026</time>
+      </div>
     </div>
     <div class="two-columns">
       <p class="lead">
@@ -90,3 +94,39 @@ import Layout from '../layouts/Layout.astro';
     </div>
   </section>
 </Layout>
+
+<style>
+  .event-card {
+    flex-shrink: 0;
+    min-width: 240px;
+    display: grid;
+    gap: 8px;
+    padding: 24px 28px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+  }
+  .event-organizer {
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .event-card strong {
+    color: var(--text);
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+  }
+  .event-card time {
+    color: var(--accent);
+    font-size: 1rem;
+  }
+  @media (max-width: 700px) {
+    .event-card {
+      margin-top: 28px;
+      min-width: 0;
+    }
+  }
+</style>
