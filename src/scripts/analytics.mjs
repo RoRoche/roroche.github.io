@@ -25,17 +25,19 @@ export function initializeAnalytics(browser = window) {
         signal: AbortSignal.timeout(5000),
       })
       .then(async (response) => {
-        if (!response.ok) return;
+        if (!response.ok && response.status !== 404) return;
         const data = await response.json();
         if (
           typeof data.count !== 'string' ||
           !/^[0-9][0-9,.\s]*$/.test(data.count)
         )
           return;
-        counter.textContent = `${data.count} visits`;
+        // GoatCounter returns 404 with an explicit zero for an unrecorded path.
+        if (response.status === 404 && data.count !== '0') return;
+        counter.textContent = `${data.count} ${data.count === '1' ? 'visit' : 'visits'}`;
         counter.hidden = false;
       })
-      // New articles, private counters and blocked requests have no public count.
+      // Private counters and blocked requests have no public count.
       .catch(() => {});
   }
 }

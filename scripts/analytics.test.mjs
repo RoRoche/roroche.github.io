@@ -79,3 +79,24 @@ test('missing, disabled, blocked or invalid counters stay hidden without invente
     assert.equal(counter.textContent, '');
   }
 });
+
+test('a new article displays the explicit zero returned by GoatCounter with HTTP 404', async () => {
+  const { browser, counter } = fixture(
+    'roroche.github.io',
+    Response.json({ count: '0', count_unique: '0' }, { status: 404 }),
+  );
+  initializeAnalytics(browser);
+  await setImmediate();
+  assert.equal(counter.textContent, '0 visits');
+  assert.equal(counter.hidden, false);
+});
+
+test('an error response cannot provide a nonzero visit count', async () => {
+  const { browser, counter } = fixture(
+    'roroche.github.io',
+    Response.json({ count: '12' }, { status: 404 }),
+  );
+  initializeAnalytics(browser);
+  await setImmediate();
+  assert.equal(counter.hidden, true);
+});
