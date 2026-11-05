@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import Comments from '../../components/Comments.astro';
 import { getArticles, href, asset, articleDate } from '../../lib/content';
 import { labels } from '../../data/site';
 export async function getStaticPaths() {
@@ -75,6 +76,7 @@ const { Content, headings } = await render(article);
         <p>
           <a href={article.data.source}>Read the source on GitHub ↗</a>
         </p>
+        {!article.data.draft && <Comments />}
       </div>
     </div>
   </article>
