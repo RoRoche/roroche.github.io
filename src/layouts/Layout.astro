@@ -38,6 +38,12 @@ const nav = [
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} — Articles`}
+      href={href('rss.xml')}
+    />
     <link rel="icon" type="image/svg+xml" href={href('favicon.svg')} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={pageTitle} />

@@ -105,6 +105,8 @@ For immediate publication, the articles repository can send a repository dispatc
 
 Article filters are static links, so they work without JavaScript, are keyboard accessible and have shareable URLs. The site includes a skip link, visible keyboard focus, semantic headings, canonical links, social metadata, sitemap and a custom 404 page. The social card is served as a PNG for sharing compatibility; its editable SVG source is included.
 
+The articles RSS 2.0 feed is available at `/rss.xml` and includes published articles only. Its URL is advertised in the page metadata and linked from the articles index.
+
 ## Maintenance
 
 `mise.toml` pins Node 24. `package-lock.json` locks npm dependencies. Renovate covers npm, GitHub Actions and mise using its recommended presets; install/enable the Renovate GitHub App for this repository. CI validates pull requests and `main`. Deployment is limited to `main` and explicit workflow events; pull requests never deploy.
