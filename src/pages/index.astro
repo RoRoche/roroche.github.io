@@ -5,7 +5,9 @@ import EmptyArticles from '../components/EmptyArticles.astro';
 import { getArticles, href } from '../lib/content';
 import { expertise } from '../data/site';
 import { projects } from '../data/projects';
+import { getHomepageBookmarks } from '../lib/raindrop';
 const articles = (await getArticles()).slice(0, 3);
+const bookmarks = await getHomepageBookmarks();
 ---
 
 <Layout>
@@ -119,10 +121,38 @@ const articles = (await getArticles()).slice(0, 3);
       <EmptyArticles />
     )}
   </section>
+  {bookmarks.length > 0 && (
+    <section class="section container">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">03 / Curated from the tech world</p>
+          <h2>My tech reading list.</h2>
+        </div>
+      </div>
+      <div class="bookmark-list">
+        {bookmarks.map((bookmark) => (
+          <article class="bookmark">
+            <div class="bookmark-meta">
+              <span>{bookmark.domain}</span>
+              {bookmark.tags.length > 0 && (
+                <span class="bookmark-tags">{bookmark.tags.join(' · ')}</span>
+              )}
+            </div>
+            <h3>
+              <a href={bookmark.link} target="_blank" rel="noreferrer">
+                {bookmark.title} <span class="accent">↗</span>
+              </a>
+            </h3>
+            {bookmark.excerpt && <p>{bookmark.excerpt}</p>}
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
   <section class="section container">
     <div class="section-heading">
       <div>
-        <p class="eyebrow">03 / Built to be shared</p>
+        <p class="eyebrow">04 / Built to be shared</p>
         <h2>
           Small tools.
           <br />

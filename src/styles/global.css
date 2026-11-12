@@ -377,6 +377,36 @@ h3 {
   font-size: 0.8rem;
   color: var(--accent);
 }
+.bookmark-list {
+  border-top: 1px solid var(--line);
+}
+.bookmark {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--line);
+}
+.bookmark-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  color: var(--muted);
+  font-size: 0.65rem;
+  margin-bottom: 10px;
+}
+.bookmark-tags {
+  color: #8ea6c9;
+}
+.bookmark h3 {
+  font-size: 1.3rem;
+}
+.bookmark p {
+  max-width: 700px;
+  font-size: 0.85rem;
+  margin: 10px 0 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
 .project-row {
   display: grid;
   grid-template-columns: 50px 1fr auto 30px;
