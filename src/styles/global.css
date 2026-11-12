@@ -384,6 +384,9 @@ h3 {
   padding: 24px 0;
   border-bottom: 1px solid var(--line);
 }
+.bookmark:last-child {
+  border-bottom: 0;
+}
 .bookmark-meta {
   display: flex;
   flex-wrap: wrap;
