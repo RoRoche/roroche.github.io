@@ -74,7 +74,9 @@ const { Content, headings } = await render(article);
         <Content />
         <hr />
         <p>
-          <a href={article.data.source}>Read the source on GitHub ↗</a>
+          <a href={article.data.source} target="_blank" rel="noreferrer">
+            Read the source on GitHub ↗
+          </a>
         </p>
         {!article.data.draft && <Comments />}
       </div>
