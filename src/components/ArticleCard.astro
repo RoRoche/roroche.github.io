@@ -28,6 +28,17 @@ const { article } = Astro.props;
     <time datetime={article.data.date.toISOString()}>
       {articleDate(article.data.date, article.data.draft)}
     </time>
+    {import.meta.env.PROD &&
+      !article.data.draft &&
+      process.env.INCLUDE_DRAFTS !== 'true' && (
+        <span
+          data-visit-count={
+            new URL(href(`articles/${article.id}/`), Astro.url).pathname
+          }
+          hidden
+          aria-live="polite"
+        ></span>
+      )}
     {article.data.draft && <span>Draft preview</span>}
   </div>
   <h3>

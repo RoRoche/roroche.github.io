@@ -117,7 +117,7 @@ Deployment reference: [GitHub Pages site types](https://docs.github.com/en/pages
 
 GoatCounter collects visits on production pages at `roroche.github.io`, using the account at https://roroche.goatcounter.com/. A small asynchronous tracker is loaded without an SDK or private API key. Development pages, draft-preview builds and pages marked `noindex` omit the integration. A hostname guard also prevents local previews of production output from loading the tracker or requesting counters.
 
-Published article pages display a discreet visit count next to the date. Enable **Allow adding visitor counts on your website** in the GoatCounter site settings; the rest of the dashboard can remain private. Counters use the full article path including the trailing slash, matching the site's canonical URLs. GoatCounter's default session deduplication means these are visits, not every page reload.
+Published article pages and cards display a discreet visit count next to the date. Enable **Allow adding visitor counts on your website** in the GoatCounter site settings; the rest of the dashboard can remain private. Counters use the full article path including the trailing slash, matching the site's canonical URLs. GoatCounter's default session deduplication means these are visits, not every page reload.
 
 For an article not yet recorded, GoatCounter returns HTTP 404 with an explicit zero; the site displays that value as “0 visits”. The count stays hidden when public counters are disabled or the request is blocked, fails, or returns invalid data. It never substitutes a fabricated zero for an error. GoatCounter may cache public counts for up to four hours. See the [official counter documentation](https://www.goatcounter.com/help/visitor-counter).
 
