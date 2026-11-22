@@ -33,7 +33,7 @@ npm run preview
 `npm ci` installs the Husky pre-commit hook through the `prepare` script. Every commit checks staged whitespace errors, then runs the full project validation:
 
 1. **ESLint**: JavaScript, TypeScript and Astro rules, including strict accessibility checks. Warnings fail validation.
-2. **Prose lint**: textlint with write-good checks the generated published articles for common English style issues.
+2. **Prose lint**: textlint with write-good checks published articles for repeated words, sentence-initial “So” and clichés. Subjective adverb, passive-voice, wordiness and weasel-word checks are disabled to avoid false positives in technical prose.
 3. **Prettier**: checks formatting without modifying files.
 4. **Astro Check**: validates Astro components and TypeScript types.
 5. **Tests**: runs the Node.js article-import and analytics tests.
