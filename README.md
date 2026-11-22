@@ -44,7 +44,7 @@ Run `npm run sync:articles` before `npm run lint:prose` or `npm run quality` to 
 
 The hook uses locally available articles and does not fetch content or require network access. Run `npm run sync:articles` first when you want to validate the latest published content. Generated content, dependencies and build output are excluded from source linting and formatting; Astro Check and the build still validate imported articles.
 
-Both GitHub Actions workflows retrieve articles and run ESLint, textlint, Prettier, Astro Check and tests as separate steps before building. After the build, they install Chromium and run the Playwright UI, accessibility and visual regression checks. A failed check blocks deployment. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
+Both GitHub Actions workflows retrieve articles and run ESLint, textlint, Prettier, Astro Check, the build and browser tests in the same pinned Playwright container. This keeps Chromium and system-font rendering consistent with the Linux screenshot baselines. A failed check blocks deployment. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
 
 ## Article source contract
 
