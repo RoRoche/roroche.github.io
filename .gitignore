@@ -3,6 +3,7 @@ dist/
 .astro/
 playwright-report/
 test-results/
+.lighthouseci/
 .idea/
 .DS_Store
 .external/

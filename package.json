@@ -12,39 +12,66 @@
     "preview": "astro preview",
     "check": "astro check",
     "test": "node --test scripts/*.test.mjs",
+    "test:coverage": "node --experimental-test-coverage --test-coverage-lines=85 --test-coverage-branches=70 --test-coverage-functions=85 --test scripts/*.test.mjs",
     "sync:articles": "node scripts/sync-articles.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint . --max-warnings 0",
     "lint:prose": "node scripts/lint-prose.mjs",
+    "lint:css": "stylelint \"src/styles/**/*.css\" --max-warnings 0",
+    "lint:html": "html-validate \"dist/**/*.html\"",
+    "lint:dead-code": "knip",
+    "audit:dependencies": "npm audit --audit-level=high",
+    "audit:lighthouse": "node scripts/run-lighthouse.mjs",
     "lint:fix": "npm run lint -- --fix",
-    "quality": "npm run lint && npm run lint:prose && npm run format:check && npm run check && npm test",
+    "quality": "npm run lint && npm run lint:css && npm run lint:prose && npm run format:check && npm run check && npm run test:coverage && npm run lint:dead-code",
     "test:e2e": "playwright test",
-    "validate": "npm run quality && npm run build && npm run test:e2e",
+    "validate": "npm run quality && npm run build && npm run lint:html && npm run test:e2e && npm run audit:lighthouse",
     "prepare": "husky"
   },
   "dependencies": {
     "@astrojs/sitemap": "3.7.4",
     "@fontsource-variable/roboto": "^5.2.9",
-    "astro": "7.4.4",
+    "astro": "7.4.13",
     "gray-matter": "^4.0.3"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.12",
     "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
+    "@lhci/cli": "^0.16.1",
     "@playwright/test": "^1.65.1",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.2.1",
     "eslint-plugin-jsx-a11y-x": "^0.2.0",
     "globals": "^17.14.0",
+    "html-validate": "^11.21.1",
     "husky": "^9.1.7",
+    "knip": "^6.48.0",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
+    "stylelint": "^18.1.0",
+    "stylelint-config-standard": "^41.1.0",
     "textlint": "^16.1.2",
     "textlint-rule-write-good": "^2.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.72.1"
+  },
+  "knip": {
+    "entry": [
+      "lighthouserc.cjs"
+    ],
+    "ignoreDependencies": [
+      "textlint"
+    ]
+  },
+  "overrides": {
+    "textlint": {
+      "glob": "14.0.6"
+    },
+    "eslint-plugin-jsx-a11y-x": {
+      "minimatch": "11.0.9"
+    }
   }
 }

@@ -32,19 +32,20 @@ npm run preview
 
 `npm ci` installs the Husky pre-commit hook through the `prepare` script. Every commit checks staged whitespace errors, then runs the full project validation:
 
-1. **ESLint**: JavaScript, TypeScript and Astro rules, including strict accessibility checks. Warnings fail validation.
-2. **Prose lint**: textlint with write-good checks published articles for repeated words, sentence-initial “So” and clichés. Subjective adverb, passive-voice, wordiness and weasel-word checks are disabled to avoid false positives in technical prose.
-3. **Prettier**: checks formatting without modifying files.
-4. **Astro Check**: validates Astro components and TypeScript types.
-5. **Tests**: runs the Node.js article-import and analytics tests.
-6. **Build**: generates the production site and optimized images only after the checks pass.
-7. **Browser tests**: Playwright checks key navigation and keyboard behavior, axe scans representative pages for WCAG A/AA issues (excluding the third-party slide player), and screenshot baselines cover the home page at desktop/mobile sizes and the about-page introduction.
+1. **ESLint and Stylelint**: JavaScript, TypeScript, Astro accessibility rules and the global stylesheet. Warnings fail validation.
+2. **Editorial contract**: article import tests verify publication metadata, permanent source links, categories, draft privacy and rewritten assets. `textlint`/`write-good` checks published articles for repeated words, sentence-initial “So” and clichés; subjective style checks are disabled to avoid false positives in technical prose.
+3. **Prettier and Astro Check**: check formatting, Astro components and TypeScript types.
+4. **Unit tests, V8 coverage and Knip**: Node's built-in test runner covers article import and analytics with minimum 85% line/function and 70% branch coverage; Knip detects unused files, exports and dependencies.
+5. **Dependency security**: CI runs `npm audit` and blocks high/critical advisories. OSV-Scanner checks new vulnerabilities on pull requests and performs a scheduled full scan; CodeQL analyzes JavaScript/TypeScript; Gitleaks scans repository history for secrets.
+6. **Build and generated HTML**: generates the static site, then `html-validate` checks the HTML Astro actually emits.
+7. **Browser, SEO and performance**: Playwright tests UI, internal links, canonical/Open Graph metadata and the sitemap; axe checks WCAG A/AA; screenshot baselines catch visual regressions; Lighthouse CI runs three audits per representative page with minimum scores of 85 performance, 95 accessibility, 95 SEO and 90 best practices.
+8. **External links**: Lychee checks README and published-article links weekly, separately from deployment so third-party outages do not block a release.
 
-Run `npm run sync:articles` before `npm run lint:prose` or `npm run quality` to validate the latest published articles. `npm run quality` runs static checks, prose lint and Node.js tests; `npm run validate` runs the complete sequence including the production build and browser tests. To run browser tests separately, build the site first and install the browser with `npx playwright install chromium`, then run `npm run test:e2e`. Review screenshot changes and update baselines intentionally with `npx playwright test --update-snapshots`. Use `npm run format` and `npm run lint:fix` to apply supported fixes, review them and stage the resulting changes before committing again. Validation checks the entire working tree, including unstaged changes; it does not automatically stage or rewrite files.
+Run `npm run sync:articles` before `npm run lint:prose` or `npm run quality` to validate the latest published articles. `npm run quality` runs local source checks and tests; `npm run audit:dependencies` runs the npm registry audit separately. `npm run validate` runs the complete local sequence including the production build, generated HTML, browser checks and Lighthouse. To run browser tests separately, build the site first and install the browser with `npx playwright install chromium`, then run `npm run test:e2e`. Review screenshot changes and update baselines intentionally with `npx playwright test --update-snapshots`. Use `npm run format` and `npm run lint:fix` to apply supported fixes, review them and stage the resulting changes before committing again. Validation checks the entire working tree, including unstaged changes; it does not automatically stage or rewrite files.
 
 The hook uses locally available articles and does not fetch content or require network access. Run `npm run sync:articles` first when you want to validate the latest published content. Generated content, dependencies and build output are excluded from source linting and formatting; Astro Check and the build still validate imported articles.
 
-Both GitHub Actions workflows retrieve articles and run ESLint, textlint, Prettier, Astro Check, the build and browser tests in the same pinned Playwright container. This keeps Chromium and system-font rendering consistent with the Linux screenshot baselines. A failed check blocks deployment. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
+Both GitHub Actions workflows retrieve articles and run the same required checks in the pinned Playwright container. This keeps Chromium and system-font rendering consistent with the Linux screenshot baselines. Separate security workflows run CodeQL, OSV-Scanner and Gitleaks; a scheduled Lychee workflow checks external references. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
 
 ## Article source contract
 

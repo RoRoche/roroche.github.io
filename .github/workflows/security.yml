@@ -1,0 +1,27 @@
+name: Dependency security
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '41 7 * * 1'
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+jobs:
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: github/codeql-action/init@d2aacf54c2fbc910db8d7ec338fdb54ea48c692d # v3
+        with:
+          languages: javascript-typescript
+          build-mode: none
+      - uses: github/codeql-action/analyze@d2aacf54c2fbc910db8d7ec338fdb54ea48c692d # v3
+  osv-pull-request:
+    if: github.event_name == 'pull_request'
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable-pr.yml@32d3cd482bdadfb38b186c0ad1b031902d55d932 # v2.7.1
+  osv-full-scan:
+    if: github.event_name != 'pull_request'
+    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@32d3cd482bdadfb38b186c0ad1b031902d55d932 # v2.7.1

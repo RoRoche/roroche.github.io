@@ -10,6 +10,7 @@ import {
 } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import matter from 'gray-matter';
 import { normalize, syncArticles } from './sync-articles.mjs';
 
 test('drafts stay private; publication requires a date and a permanent slug', () => {
@@ -72,6 +73,17 @@ test('imports source layout, assets and base-aware links; removes stale publicat
       join(target, 'src/content/articles/an-article.md'),
       'utf8',
     );
+    const { data, content } = matter(result);
+    assert.equal(data.title, 'A useful test');
+    assert.equal(data.description, 'A description');
+    assert.equal(data.category, 'testing');
+    assert.equal(data.draft, false);
+    assert.equal(
+      data.source,
+      'https://github.com/RoRoche/articles/blob/main/an-article/post.md',
+    );
+    assert.match(content, /Example/);
+    assert.match(content, /External/);
     assert.match(result, /\/website\/article-assets\/an-article\/header.png/);
     assert.match(result, /https:\/\/example.com/);
     await access(join(target, 'public/article-assets/an-article/header.png'));

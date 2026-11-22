@@ -69,6 +69,90 @@ test('embedded talk slides have an accessible title', async ({ page }) => {
   await expect(page.locator('iframe')).toHaveAttribute('title', /slides/);
 });
 
+test('public pages expose consistent SEO metadata', async ({ page }) => {
+  for (const path of [
+    '/',
+    '/articles/',
+    '/open-source/',
+    '/talks/',
+    '/book/',
+    '/about/',
+  ]) {
+    await page.goto(sitePath(path));
+
+    const siteUrl = process.env.SITE_URL ?? 'https://roroche.github.io';
+    const canonical = new URL(path, siteUrl).href;
+    await expect(page).toHaveTitle(/\S+/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      /\S+/,
+    );
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      canonical,
+    );
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      'content',
+      /\S+/,
+    );
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+      'content',
+      canonical,
+    );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      /^https:\/\//,
+    );
+  }
+});
+
+test('sitemap is served and lists the configured site', async ({ request }) => {
+  const response = await request.get(sitePath('/sitemap-index.xml'));
+  expect(response.ok()).toBeTruthy();
+  const siteUrl = process.env.SITE_URL ?? 'https://roroche.github.io';
+  expect(await response.text()).toContain(
+    new URL('/sitemap-0.xml', siteUrl).href,
+  );
+});
+
+test('internal links resolve to generated pages and assets', async ({
+  page,
+  request,
+}) => {
+  const paths = [
+    '/',
+    '/articles/',
+    '/articles/category/testing/',
+    '/open-source/',
+    '/talks/',
+    '/book/',
+    '/about/',
+  ];
+  const internalLinks = new Set<string>();
+
+  for (const path of paths) {
+    await page.goto(sitePath(path));
+    for (const href of await page
+      .locator('a[href]')
+      .evaluateAll((anchors) =>
+        anchors.map((anchor) => (anchor as HTMLAnchorElement).href),
+      )) {
+      const link = new URL(href);
+      if (link.origin === new URL(page.url()).origin) {
+        link.hash = '';
+        internalLinks.add(link.href);
+      }
+    }
+  }
+
+  for (const link of internalLinks) {
+    const response = await request.get(link);
+    expect(response.status(), `Broken internal link: ${link}`).toBeLessThan(
+      400,
+    );
+  }
+});
+
 test('home hero matches the desktop visual baseline', async ({ page }) => {
   await page.goto(sitePath('/'));
   await expect(page.locator('.hero')).toHaveScreenshot('home-hero-desktop.png');

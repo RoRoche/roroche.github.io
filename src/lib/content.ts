@@ -7,7 +7,7 @@ export const href = (path = '') =>
   `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 export const asset = (path: string) =>
   path.startsWith('/') ? href(path) : path;
-export const formatDate = (date: Date) =>
+const formatDate = (date: Date) =>
   new Intl.DateTimeFormat('en', {
     day: 'numeric',
     month: 'short',

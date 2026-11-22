@@ -27,6 +27,8 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: jdx/mise-action@5228313ee0372e111a38da051671ca30fc5a96db # v3
       - run: npm ci
+      - name: Dependency audit
+        run: npm run audit:dependencies
       - name: Retrieve current articles at build time
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -37,6 +39,8 @@ jobs:
       - run: npm run sync:articles -- .external/articles
       - name: ESLint (including Astro accessibility rules)
         run: npm run lint
+      - name: Stylelint
+        run: npm run lint:css
       - name: Prose lint (published articles)
         run: npm run lint:prose
       - name: Prettier
@@ -44,13 +48,19 @@ jobs:
       - name: Astro Check
         run: npm run check
       - name: Tests
-        run: npm test
+        run: npm run test:coverage
+      - name: Dead-code and dependency usage
+        run: npm run lint:dead-code
       - name: Build
         env:
           RAINDROP_ACCESS_TOKEN: ${{ secrets.RAINDROP_ACCESS_TOKEN }}
         run: npm run build
+      - name: Validate generated HTML
+        run: npm run lint:html
       - name: UI, accessibility and visual regression tests
         run: npm run test:e2e
+      - name: Lighthouse budgets
+        run: npm run audit:lighthouse
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         with:
           path: dist

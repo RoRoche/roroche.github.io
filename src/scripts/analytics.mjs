@@ -1,4 +1,4 @@
-export const goatCounterOrigin = 'https://roroche.goatcounter.com';
+const goatCounterOrigin = 'https://roroche.goatcounter.com';
 const productionHostname = 'roroche.github.io';
 
 export function initializeAnalytics(browser = window) {
