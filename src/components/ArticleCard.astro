@@ -4,8 +4,9 @@ import { asset, href, articleDate } from '../lib/content';
 import { labels } from '../data/site';
 interface Props {
   article: CollectionEntry<'articles'>;
+  priority?: boolean;
 }
-const { article } = Astro.props;
+const { article, priority = false } = Astro.props;
 ---
 
 <article class="article-card">
@@ -20,7 +21,8 @@ const { article } = Astro.props;
       alt=""
       width="1200"
       height="630"
-      loading="lazy"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : undefined}
     />
   </a>
   <div class="article-meta">

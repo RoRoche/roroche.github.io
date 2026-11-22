@@ -10,4 +10,5 @@ test-results/
 src/content/articles/*
 !src/content/articles/.gitkeep
 public/article-assets/
+public/article-covers/
 .env

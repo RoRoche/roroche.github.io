@@ -11,6 +11,7 @@ import { resolve, join, relative, sep, posix } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import matter from 'gray-matter';
+import sharp from 'sharp';
 
 export function normalize(data, slug, { includeDrafts = false } = {}) {
   const draft =
@@ -58,6 +59,7 @@ export async function syncArticles(
 ) {
   const output = join(destination, 'src/content/articles');
   const assets = join(destination, 'public/article-assets');
+  const covers = join(destination, 'public/article-covers');
   const base = (options.base || '/').replace(/\/$/, '');
   const posts = [];
   async function walk(directory) {
@@ -84,6 +86,7 @@ export async function syncArticles(
     if (slugs.has(slug)) throw new Error(`Duplicate article slug: ${slug}`);
     slugs.add(slug);
     const image = data.image || 'header.png';
+    let coverPath;
     if (/^(https?:)?\/\//.test(image)) normalized.image = image;
     else {
       const imagePath = resolve(directory, image);
@@ -91,6 +94,13 @@ export async function syncArticles(
         throw new Error(`${slug}: image must stay in article directory`);
       await access(imagePath);
       normalized.image = `/article-assets/${slug}/${image.replace(/^\.\//, '')}`;
+      if (/\.(?:png|jpe?g|webp|avif|tiff?)$/i.test(imagePath)) {
+        const { pages } = await sharp(imagePath).metadata();
+        if (pages === undefined || pages === 1) {
+          normalized.image = `/article-covers/${slug}.webp`;
+          coverPath = imagePath;
+        }
+      }
     }
     normalized.source = `https://github.com/RoRoche/articles/blob/main/${relative(source, path).split(sep).join('/')}`;
     // Keep article-local images and attachments available under the same permanent slug.
@@ -108,13 +118,16 @@ export async function syncArticles(
       slug,
       directory,
       markdown: matter.stringify(rewritten, normalized),
+      coverPath,
     });
   }
   // Validate all posts before replacing generated content.
   await rm(output, { recursive: true, force: true });
   await rm(assets, { recursive: true, force: true });
+  await rm(covers, { recursive: true, force: true });
   await mkdir(output, { recursive: true });
   await mkdir(assets, { recursive: true });
+  await mkdir(covers, { recursive: true });
   await writeFile(join(output, '.gitkeep'), '');
   for (const post of prepared) {
     await writeFile(join(output, `${post.slug}.md`), post.markdown);
@@ -126,6 +139,18 @@ export async function syncArticles(
           .split(sep)
           .some((p) => p.startsWith('.') && p !== ''),
     });
+    if (post.coverPath) {
+      await sharp(post.coverPath)
+        .rotate()
+        .resize({
+          width: 1200,
+          height: 630,
+          fit: 'cover',
+          withoutEnlargement: true,
+        })
+        .webp({ quality: 80 })
+        .toFile(join(covers, `${post.slug}.webp`));
+    }
   }
   console.log(
     `Imported ${prepared.length} article(s); skipped ${posts.length - prepared.length} unpublished article(s).`,

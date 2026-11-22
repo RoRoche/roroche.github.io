@@ -55,8 +55,8 @@ const articles = await getArticles();
     </nav>
     {articles.length ? (
       <div class="article-grid">
-        {articles.map((article) => (
-          <ArticleCard article={article} />
+        {articles.map((article, index) => (
+          <ArticleCard article={article} priority={index === 0} />
         ))}
       </div>
     ) : (
