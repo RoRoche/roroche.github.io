@@ -37,12 +37,13 @@ npm run preview
 3. **Astro Check**: validates Astro components and TypeScript types.
 4. **Tests**: runs the Node.js article-import and analytics tests.
 5. **Build**: generates the production site and optimized images only after the checks pass.
+6. **Browser tests**: Playwright checks key navigation and keyboard behavior, axe scans representative pages for WCAG A/AA issues (excluding the third-party slide player), and screenshot baselines cover the home page at desktop/mobile sizes and the about-page introduction.
 
-Run `npm run quality` for the checks without the build, or `npm run validate` for the complete sequence. Use `npm run format` and `npm run lint:fix` to apply supported fixes, review them and stage the resulting changes before committing again. Validation checks the entire working tree, including unstaged changes; it does not automatically stage or rewrite files.
+Run `npm run quality` for static checks and Node.js tests, or `npm run validate` for the complete sequence including the production build and browser tests. To run browser tests separately, build the site first and install the browser with `npx playwright install chromium`, then run `npm run test:e2e`. Review screenshot changes and update baselines intentionally with `npx playwright test --update-snapshots`. Use `npm run format` and `npm run lint:fix` to apply supported fixes, review them and stage the resulting changes before committing again. Validation checks the entire working tree, including unstaged changes; it does not automatically stage or rewrite files.
 
 The hook uses locally available articles and does not fetch content or require network access. Run `npm run sync:articles` first when you want to validate the latest published content. Generated content, dependencies and build output are excluded from source linting and formatting; Astro Check and the build still validate imported articles.
 
-Both GitHub Actions workflows retrieve articles and run ESLint, Prettier, Astro Check and tests as separate steps before building. A failed check blocks the build and deployment. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
+Both GitHub Actions workflows retrieve articles and run ESLint, Prettier, Astro Check and tests as separate steps before building. After the build, they install Chromium and run the Playwright UI, accessibility and visual regression checks. A failed check blocks deployment. Husky installation is disabled in CI with `HUSKY=0`; the checks run directly in the workflows.
 
 ## Article source contract
 
