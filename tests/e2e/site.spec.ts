@@ -20,6 +20,46 @@ test('main navigation works and marks the current page', async ({ page }) => {
   );
 });
 
+test('theme can be switched and is remembered after reload', async ({
+  page,
+}) => {
+  await page.goto(sitePath('/'));
+
+  const toggle = page.getByRole('button', { name: 'Switch to light theme' });
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await toggle.click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await expect(
+    page.getByRole('button', { name: 'Switch to dark theme' }),
+  ).toBeVisible();
+  await expect(page.locator('body')).toHaveCSS(
+    'background-color',
+    'rgb(247, 249, 252)',
+  );
+
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+  await page.getByRole('button', { name: 'Switch to dark theme' }).click();
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+});
+
+test('theme control fits the tablet navigation without horizontal overflow', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto(sitePath('/'));
+
+  await expect(
+    page.getByRole('button', { name: 'Switch to light theme' }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBeTruthy();
+});
+
 test('article topic filters navigate without JavaScript', async ({ page }) => {
   await page.goto(sitePath('/articles/'));
 
@@ -44,14 +84,16 @@ test('skip link is the first keyboard stop and targets main content', async ({
   await expect(page).toHaveURL(/#main$/);
 });
 
-for (const path of [
+const accessibilityPaths = [
   '/',
   '/articles/',
   '/open-source/',
   '/talks/',
   '/book/',
   '/about/',
-]) {
+];
+
+for (const path of accessibilityPaths) {
   test(`has no axe WCAG A/AA violations on ${path}`, async ({ page }) => {
     await page.goto(sitePath(path));
 
@@ -63,6 +105,20 @@ for (const path of [
     expect(results.violations).toEqual([]);
   });
 }
+
+test('light theme has no axe WCAG A/AA violations', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('site-theme', 'light'));
+  for (const path of accessibilityPaths) {
+    await page.goto(sitePath(path));
+
+    const results = await new AxeBuilder({ page })
+      .exclude('iframe')
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+
+    expect(results.violations).toEqual([]);
+  }
+});
 
 test('embedded talk slides have an accessible title', async ({ page }) => {
   await page.goto(sitePath('/talks/'));

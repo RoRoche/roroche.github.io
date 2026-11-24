@@ -35,6 +35,15 @@ const nav = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#10141c" />
+    <script is:inline>
+      try {
+        const theme = localStorage.getItem('site-theme');
+        if (theme === 'dark' || theme === 'light')
+          document.documentElement.dataset.theme = theme;
+      } catch {
+        // The default dark theme remains available when storage is disabled.
+      }
+    </script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -82,6 +91,39 @@ const nav = [
             {label}
           </a>
         ))}
+        <button
+          class="theme-toggle"
+          type="button"
+          data-theme-toggle
+          aria-label="Switch to light theme"
+          hidden
+        >
+          <svg
+            data-theme-icon="light"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+          </svg>
+          <svg
+            data-theme-icon="dark"
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z" />
+          </svg>
+          <span data-theme-label>Light</span>
+        </button>
       </nav>
     </header>
     <main id="main">
@@ -108,5 +150,9 @@ const nav = [
         <span>Thoughtfully built with Astro.</span>
       </div>
     </footer>
+    <script>
+      import { initializeThemeToggle } from '../scripts/theme.mjs';
+      initializeThemeToggle();
+    </script>
   </body>
 </html>

@@ -155,7 +155,7 @@ const journey = [
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: radial-gradient(ellipse, #91bfff18, transparent 70%);
+    background: radial-gradient(ellipse, var(--portrait-glow), transparent 70%);
   }
   .portrait-frame {
     aspect-ratio: 1;
@@ -164,7 +164,7 @@ const journey = [
       145deg,
       var(--accent),
       var(--line) 65%,
-      #5e8fc6
+      var(--illustration-mid)
     );
     clip-path: polygon(
       50% 0,
@@ -203,7 +203,7 @@ const journey = [
     left: 0;
     width: 100%;
     height: auto;
-    stroke: #5e8fc6;
+    stroke: var(--illustration-mid);
     stroke-width: 1;
     pointer-events: none;
   }
